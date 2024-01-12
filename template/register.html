@@ -51,14 +51,20 @@
                                             placeholder="Last Name" name="l_name"> 
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group ">
                                     <input type="text" class="form-control form-control-user" id="exampleInputEmail"
-                                        placeholder="Email Address" name= "username">
+                                        placeholder="Username" name= "username">
                                 </div>
                                 <div class="form-group">
                                     <!-- <div class="col-sm-6 mb-3 mb-sm-0"> -->
                                         <input type="password" class="form-control form-control-user"
                                             id="exampleInputPassword" placeholder="Password" name="passw">
+
+                                <div class="form-group mt-3">
+                                    <input type="text" class="form-control form-control-user" 
+                                        id="exampleInputEmail" placeholder="pin" name= "pin_regis">
+                                        
+                                </div>
                                     <!-- </div> -->
                                     <!-- <div class="col-sm-6">
                                         <input type="password" class="form-control form-control-user"
@@ -92,14 +98,14 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
 
 </body>
 

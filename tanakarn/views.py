@@ -1,21 +1,42 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from . import models
-from django.contrib.auth import authenticate, login
+from django.db.models import F
 
+
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 # Create your views here.
 
 # หน้าโฮมเพจ --
-def homePage (request): 
-   
-    return render (request, 'index.html')
 
-def registerMember(request):
+
+@login_required()
+def homePage (request): 
+    user_username = request.user.username
+    user = User.objects.get(username=user_username)
+    customer = models.Customer.objects.get(user=user)
+
+    transaction = models.Transaction.objects.filter(customer=customer).order_by('-id')
+
+   
+    return render (request, 'index.html',
+                   {
+                       "balance":customer.balance,
+                        "number_phone":customer.phone_number,
+                       "trans":transaction,
+                       "trans_count":transaction.count()
+                   })
+
+# หน้าสมัครสมาชิก
+
+def  registerMember(request):
     first_name = request.POST.get('f_name')
     last_name = request.POST.get('l_name')
     username = request.POST.get('username')
     password = request.POST.get('passw')
-    print(first_name, last_name, username, password)
+    pin = request.POST.get('pin_regis')
     try :
 
         user = User.objects.create_user(
@@ -31,10 +52,10 @@ def registerMember(request):
                 phone_number="-",
                 addres="-",
                 balance=0.00,
-                pin="111111"
+                pin=pin
             )
             if customer:
-                return redirect("home")
+                return redirect("log-page")
     
     except :
         return redirect("regis")
@@ -67,7 +88,7 @@ def loginMember(request):
                 return redirect("home")
     
     except :
-        return redirect("regis")
+        return render("regis")
 
 
 def loginUser(request):
@@ -79,13 +100,18 @@ def loginUser(request):
         password=password
     )
 
-    if user.is_active:
+    if user:
         login(request, user)
-        return redirect("homrpage")
+        return redirect("home-page")
     else:
         
-        return redirect("login")
+        return redirect("log-page")
         
+
+# logout --naja
+    
+def logout_view(request):
+    logout(request,'login.html')
 
 
 
@@ -94,14 +120,90 @@ def loginPage (request):
     return render (request, 'login.html')
 
 # ฝากเงิน --
+login_required
 def depositPage (request):
-    return render (request, 'buttons.html')
+
+    user_username = request.user.username
+    user = User.objects.get(username=user_username)
+    customer = models.Customer.objects.get(user=user)
+
+
+    transaction = models.Transaction.objects.filter(customer=customer).order_by('-id')
+    
+
+    return render (request, 'buttons.html',{
+        "balance":customer.balance,
+        "number_phone":customer.phone_number,
+        "trans":transaction,
+        "trans_count":transaction.count()
+    })
 
 # ถอนเงิน --
+login_required
 def withdrawPage (request):
-    return render (request, 'cards.html')
+    user_username = request.user.username
+    user = User.objects.get(username=user_username)
+    customer = models.Customer.objects.get(user=user)
+
+    transaction = models.Transaction.objects.filter(customer=customer).order_by('-id')
+
+    return render (request, 'cards.html',{
+        "balance":customer.balance,
+        "number_phone":customer.phone_number,
+        "trans":transaction,
+        "trans_count":transaction.count()
+    })
 
 # หน้าสมัครสมาชิก
 def register (request):
     return render (request, 'register.html')
 
+
+def DepositMoney (request):
+    money=request.POST.get('money')
+    
+    user_username = request.user.username
+    user = User.objects.get(username=user_username)
+    customer = models.Customer.objects.get(user=user)
+
+    
+
+
+
+    models.Customer.objects.filter(user=user).update(balance=F("balance")+int(money))
+    
+    models.Transaction.objects.create(
+        customer=customer,
+        type=1,
+        total=money
+    )
+    return redirect('depos-page')
+
+
+
+def WithdrawMoney (request):
+    money=request.POST.get('money')
+
+    
+    
+    user_username = request.user.username
+    user = User.objects.get(username=user_username)
+    customer = models.Customer.objects.get(user=user)
+
+    if int(money) < int(customer.balance):
+            
+
+        models.Customer.objects.filter(user=user).update(balance=F("balance")-int(money))
+        
+        models.Transaction.objects.create(
+            customer=customer,
+            type=-1,
+            total=money
+        )
+
+
+    return redirect('with-page')
+
+
+
+# def HomePage (request):

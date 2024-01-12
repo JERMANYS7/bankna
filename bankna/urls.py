@@ -27,6 +27,9 @@ urlpatterns = [
     path('withdraw',views.withdrawPage, name='with-page'),
     path('register',views.register, name='regis'),
     path('registermember',views.registerMember, name='regis-member'),
+    path('loginuser',views.loginUser, name='log_user'),
+    path('money',views.DepositMoney, name='get_money'),
+    path('w_money',views.WithdrawMoney, name='los_money'),
 
     
 ]

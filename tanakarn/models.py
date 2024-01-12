@@ -13,7 +13,8 @@ class Customer (models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=10)
     addres = models.TextField()
-    balance = models.DecimalField(max_digits=9, decimal_places=2)
+    balance = models.DecimalField(max_digits=20, decimal_places=2)
+    customer_code = models.CharField(max_length=10)
     pin = models.CharField(max_length=6)
 
     def __str__(self):

@@ -16,5 +16,7 @@ class TransactionAdmin(admin.ModelAdmin):
 
     list_display = [
         'customer',
+        'type',
         'total',
+        'create'
     ]
