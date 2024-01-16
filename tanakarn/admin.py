@@ -6,7 +6,7 @@ from . import models
 class CustomerAdmin(admin.ModelAdmin):
 
     list_display = [
-        'user',
+        'user', 
         'phone_number',
         'balance',
     ]

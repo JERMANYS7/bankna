@@ -4,9 +4,9 @@ from . import models
 from django.db.models import F
 
 
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
+
 # Create your views here.
 
 # หน้าโฮมเพจ --
@@ -26,7 +26,8 @@ def homePage (request):
                        "balance":customer.balance,
                         "number_phone":customer.phone_number,
                        "trans":transaction,
-                       "trans_count":transaction.count()
+                       "trans_count":transaction.count(),
+                       
                    })
 
 # หน้าสมัครสมาชิก
@@ -135,7 +136,7 @@ def depositPage (request):
         "balance":customer.balance,
         "number_phone":customer.phone_number,
         "trans":transaction,
-        "trans_count":transaction.count()
+        "trans_count":transaction.count(   )
     })
 
 # ถอนเงิน --
@@ -166,17 +167,16 @@ def DepositMoney (request):
     user = User.objects.get(username=user_username)
     customer = models.Customer.objects.get(user=user)
 
-    
-
-
 
     models.Customer.objects.filter(user=user).update(balance=F("balance")+int(money))
     
+
     models.Transaction.objects.create(
         customer=customer,
         type=1,
         total=money
     )
+
     return redirect('depos-page')
 
 

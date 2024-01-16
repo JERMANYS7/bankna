@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
  
 
 Transaction_Type = (
-    (-1, "Withdraw"),
-    (1, "Deposit")
+    (1, "Withdraw"),
+    (-1, "Deposit")
 )
 
 
