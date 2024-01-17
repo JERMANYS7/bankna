@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ```mermaid
 erDiagram
 
@@ -53,3 +54,6 @@ Customer ||--|{Transaction : "have"
 | total | DECIMAL | (9,2) |  |
 | type | INT |  |  |
 | create | Date  |  |
+=======
+
+>>>>>>> 73442a702ecead9bfdd22a16954eae0100db8034
